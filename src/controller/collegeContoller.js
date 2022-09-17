@@ -13,23 +13,23 @@ const createCollege = async (req, res) => {
 
     if (Object.keys(data).length == 0) return res.status(400).send({ status: false, message: "please provide data" })
 
-    const { name, fullName, logoLink ,isDeleted} = data
+    const { name, fullName, logoLink, isDeleted } = data
 
     if (!name) return res.status(400).send({ status: false, message: "please provide name" })
 
     if (typeof (name) != "string") return res.status(400).send({ status: false, message: "pls provide name in string type" })
-    
+
     const isValidName = function (value) {
       if (!(value === value.toLowerCase())) {
-          return false
+        return false
       }
       return true
-  }
+    }
 
     if (!isValidName(name))
-      return res.status(400).send({status: false,msg: "Invalid-CollegeName-Try name with lowerCase abbrivation"});
+      return res.status(400).send({ status: false, message: "Invalid-CollegeName-Try name with lowerCase abbrivation" });
 
-    
+
     if (!regname.test(name.trim())) return res.status(400).send({ status: false, message: "plese provide the name without space" })
     let nmdata = await collegeModel.findOne({ name: name })
     if (nmdata) return res.status(400).send({ status: false, message: "this name is already present" })
@@ -42,8 +42,8 @@ const createCollege = async (req, res) => {
     if (typeof (logoLink) != "string") return res.status(400).send({ status: false, message: "pls provide logolink in string type" })
     if (!urlreg.test(logoLink)) return res.status(400).send({ status: false, message: "plese provide logolink in a correct format" })
 
-    if(isDeleted){
-      if(typeof(isDeleted) != "boolean") return res.status(400).send({ status: false, message: "pls provide isdeleted in boolean type" })
+    if (isDeleted) {
+      if (typeof (isDeleted) != "boolean") return res.status(400).send({ status: false, message: "pls provide isdeleted in boolean type" })
     }
 
     const datas = await collegeModel.create(data);
@@ -61,25 +61,24 @@ const getCollegeDetails = async (req, res) => {
     const clgName = req.query;
     let { collegeName } = req.query;
 
-     console.log(collegeName);
-    if (!collegeName)return res.status(400).send({ status: false, message: "CollgeName is required" });
+    if (!collegeName) return res.status(400).send({ status: false, message: "CollgeName is required" });
 
     if (Object.keys(clgName).length > 1)
-      return res.status(400).send({ status: false, msg: "enter single query" });
+      return res.status(400).send({ status: false, message: "enter single query" });
 
     const isValidName = function (value) {
-      if (!(value === value.toLowerCase())){
-        return false;}  
-        return true;
+      if (!(value === value.toLowerCase())) {
+        return false;
+      }
+      return true;
     };
 
     if (!isValidName(collegeName))
-      return res.status(400).send({status: false,msg: "Invalid-CollegeName-Try name with lowerCase abbrivation"});
+      return res.status(400).send({ status: false, message: "Invalid-CollegeName-Try name with lowerCase abbrivation" });
 
+    const collegename = await collegeModel.findOne({ name: collegeName });
 
-  const collegename = await collegeModel.findOne({ name: collegeName });
-
-    if (!collegename)return res.status(404).send({ status: false, message: "This College not Found in the Collection"});
+    if (!collegename) return res.status(404).send({ status: false, message: "This College not Found in the Collection" });
 
     const { name, fullName, logoLink } = collegename;
 
@@ -90,11 +89,13 @@ const getCollegeDetails = async (req, res) => {
       name: name,
       fullName: fullName,
       logoLink: logoLink,
-      interns: intern.length ? intern : { msg: "0 application from this collge" }};
+      interns: intern.length ? intern : { message: "0 application from this collge" }
+    };
 
-    return res.status(200).send({ status: true, data: data })}
+    return res.status(200).send({ status: true, data: data })
+  }
 
-  catch (err) {return res.status(500).send({ status: false, message: err.message }); }
+  catch (err) { return res.status(500).send({ status: false, message: err.message }); }
 };
 
 
