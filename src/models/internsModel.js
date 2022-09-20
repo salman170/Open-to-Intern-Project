@@ -24,7 +24,7 @@ const interSchema = new mongoose.Schema({
         type:ObjectId,
          ref :"College", 
      },
-
+     
      isDeleted:{
         type:Boolean,
          default: false}

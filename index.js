@@ -2,10 +2,11 @@ const express = require('express')
 const mongoose = require('mongoose')
 const route = require('./src/route')
 const app = express()
+const multer = require('multer')
 require('dotenv').config()
 
 app.use(express.json())
-
+app.use(multer().any())
 mongoose.connect(process.env.MONGO_CLUSTER,{
     useNewUrlParser:true
 })

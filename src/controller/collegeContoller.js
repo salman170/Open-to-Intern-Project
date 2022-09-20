@@ -8,6 +8,7 @@ const regfname = /^[a-zA-Z,'.\s]{0,150}$/
 let urlreg = /^https?:\/\/(.+\/)+.+(\.(gif|png|jpg|jpeg|webp|svg|psd|bmp|tif))$/i
 
 const createCollege = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin','*')
   try {
     let data = req.body;
 
@@ -23,7 +24,7 @@ const createCollege = async (req, res) => {
       if (!(value === value.toLowerCase())) {
         return false
       }
-      return true
+      return true;
     }
 
     if (!isValidName(name))
@@ -57,6 +58,7 @@ const createCollege = async (req, res) => {
 //----------------------------⭐GET/collegeDetails⭐----------------------------//
 
 const getCollegeDetails = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin','*')
   try {
     const clgName = req.query;
     let { collegeName } = req.query;
